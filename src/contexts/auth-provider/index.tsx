@@ -7,10 +7,8 @@ interface AuthProps {
 
 interface AuthContextProps {
   email: string;
-  isloggedin: boolean;
+  authToken: string;
   isloggedout: boolean;
-  accessToken: string;
-  role: string;
 }
 
 interface AuthContextValue {
@@ -23,10 +21,8 @@ const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 export const AuthProvider = ({ children }: AuthProps) => {
   const [auth, setAuth] = useState<AuthContextProps>({
     email: "",
-    isloggedin: false,
+    authToken: "",
     isloggedout: false,
-    accessToken: "",
-    role: "",
   });
 
   const contextValue: AuthContextValue = {

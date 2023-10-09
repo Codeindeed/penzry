@@ -4,12 +4,14 @@ import { CHAIN_NAMESPACES, IProvider } from "@web3auth/base";
 import { SolanaWalletConnectorPlugin } from "@web3auth/solana-wallet-connector-plugin";
 import { SolflareAdapter } from "@web3auth/solflare-adapter";
 import { SlopeAdapter } from "@web3auth/slope-adapter";
+import useAuth from "../useAuth";
 
 const clientId =
   "BEiqaHl8u_pJCiWD2z1k5dnUS24MrMNiGcr94iobGYuDCDkDuXMpK7fItVJPTr_PhnJ37iVKtUViaQrxGrH4j_0";
 function useWeb3Auth() {
   const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
   const [provider, setProvider] = useState<IProvider | null>(null);
+  const { auth, setAuth } = useAuth();
   useEffect(() => {
     const init = async () => {
       try {
@@ -21,7 +23,6 @@ function useWeb3Auth() {
             rpcTarget: "https://api.devnet.solana.com", // This is the public RPC we have added, please pass on your own endpoint while creating an app
           },
         });
-
         // adding solana wallet connector plugin
         const torusPlugin = new SolanaWalletConnectorPlugin({
           torusWalletOpts: {},
@@ -55,7 +56,6 @@ function useWeb3Auth() {
         console.error(error);
       }
     };
-
     init();
   }, []);
 
