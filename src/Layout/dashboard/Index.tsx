@@ -1,5 +1,5 @@
 import { useState } from "react";
-import profile from "../../Assets/profie.jpg";
+import profile from "../../assets/profie.jpg";
 import Navigation from "../dashboard-nav/Index";
 import Logo from "../../Components/ui/Logo";
 import Hamburger from "../../Components/icons/Hamburger";
