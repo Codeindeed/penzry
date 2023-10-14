@@ -18,7 +18,9 @@ async function useCollection(
   let post;
   if (type === "project") {
     post = await axios.post("/projects", {
-      ...data?.description,
+      symbol: "PENZRY",
+      description: data?.description,
+      image: "https://hatrabbits.com/wp-content/uploads/2017/01/random.jpg",
     });
   }
   if (type === "nft") {
