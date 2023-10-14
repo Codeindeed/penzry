@@ -9,14 +9,9 @@ const FeedbackContent = () => {
         perspiciatis ducimus velit.
       </p>
       <div className="bg-white px-10 py-6 shadow-sm rounded-md">
-        <h3 className="text-body-xl text-primary font-semibold">
-          Feedback Offer
-        </h3>
+        <h3 className="text-body-xl text-primary font-semibold">OFFer</h3>
         <p className="text-grey-30 text-body-md my-1">
-          We are glad to tell you we are rewarding users who fill this form with
-          our premium <strong className="text-grey-40">Rewards</strong> that
-          worth
-          <strong className="text-grey-40"> 0.5 SOL.</strong>
+          Fill the form and get total point awarded for this form 
         </p>
       </div>
     </>

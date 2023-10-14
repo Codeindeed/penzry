@@ -2,7 +2,8 @@ import { useForm } from "react-hook-form";
 import FormControl from "../../../../Components/form/FormControl";
 import Button from "../../../../Components/ui/Button";
 import { AudioRecorder } from "react-audio-voice-recorder";
-
+import useMintFeedback from "../../../../views/user-feedback-form/services";
+import { useParams } from "react-router-dom";
 interface formProps {
   firstname: string;
   lastname: string;
@@ -16,6 +17,8 @@ const initialValues = {
 };
 
 function FeedbackForm() {
+  const { mintFeedback } = useMintFeedback();
+  const params = useParams();
   const {
     register,
     handleSubmit,
@@ -39,6 +42,7 @@ function FeedbackForm() {
 
   const onSubmit = handleSubmit(async (data) => {
     // Handle form submission
+    console.log(params);
     reset();
   });
 
@@ -109,7 +113,11 @@ function FeedbackForm() {
         <br />
       </div>
 
-      <Button type="primary" className="w-full mt-4 md:mt-5">
+      <Button
+        type="primary"
+        className="w-full mt-4 md:mt-5"
+        onClick={handleSubmit}
+      >
         Submit Feedback
       </Button>
     </form>

@@ -15,6 +15,7 @@ const FeedbackTable = () => {
       setFeedback(response);
       setLoading(false);
     };
+    console.log(process.env.REACT_APP_supabaseKey);
     getFeedback();
   }, []);
   return (
