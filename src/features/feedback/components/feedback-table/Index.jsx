@@ -17,6 +17,16 @@ const content = [
     userEmail: "alexspoof@gmail.com",
     numberResponses: "08",
   },
+  {
+    feedback: "Event Lawyers Meetup",
+    userEmail: "jerryade@gmail.com",
+    numberResponses: "139",
+  },
+  {
+    feedback: "Techcabal Moonshot",
+    userEmail: "alexspoof@gmail.com",
+    numberResponses: "08",
+  },
 ];
 
 const FeedbackTable = () => {

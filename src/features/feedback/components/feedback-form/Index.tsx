@@ -8,7 +8,7 @@ interface FormField {
   name: string;
   label: string;
   required: boolean;
-  question_type: "short_answer" | "paragraph" | "multichoice";
+  question_type: "short_answer" | "paragraph" | "multichoice" | "multiCheckbox";
   list: string[];
 }
 
@@ -26,6 +26,7 @@ const FeedbackForm: React.FC = () => {
 
   const [onEdit, setOnEdit] = useState<boolean>(false);
   const [textField, setTextField] = useState<string>("");
+  const [textField2, setTextField2] = useState<string>("");
   const [editedField, setEditedField] = useState<string>("");
 
   const addQuestion = () => {
@@ -50,11 +51,12 @@ const FeedbackForm: React.FC = () => {
   };
 
   const editFieldType = (fieldName: string, fieldType: string) => {
-    const validFieldTypes: ("short_answer" | "paragraph" | "multichoice")[] = [
-      "short_answer",
-      "paragraph",
-      "multichoice",
-    ];
+    const validFieldTypes: (
+      | "short_answer"
+      | "paragraph"
+      | "multichoice"
+      | "multiCheckbox"
+    )[] = ["short_answer", "paragraph", "multichoice", "multiCheckbox"];
 
     if (validFieldTypes.includes(fieldType as any)) {
       // Use type assertion as any
@@ -64,7 +66,8 @@ const FeedbackForm: React.FC = () => {
         formFields[fieldIndex].question_type = fieldType as
           | "short_answer"
           | "paragraph"
-          | "multichoice"; // Use type assertion
+          | "multichoice"
+          | "multiCheckbox"; // Use type assertion
         setFormContent(formFields);
       }
     }
@@ -77,7 +80,6 @@ const FeedbackForm: React.FC = () => {
       if (option && option !== "") {
         formFields[fieldIndex].list.push(option);
         setFormContent(formFields);
-        setTextField("");
       }
     }
   };
@@ -95,7 +97,7 @@ const FeedbackForm: React.FC = () => {
 
   return (
     <div className="flex flex-col justify-start items-center min-h-screen w-[90%] space-y-4">
-      <div className="flex flex-col px-10 bg-white rounded-md justify-center item-start w-full shadow-sm border-primary border-t-8 space-y-2 h-52">
+      <div className="flex flex-col px-10 py-8 bg-white rounded-md justify-center item-start w-full shadow-sm border-primary border-t-8 space-y-2 min-h-52 ">
         <h1 className="text-headline-md text-primary">Create Feedback</h1>
         <div className="w-full mb-4">
           <label
@@ -110,6 +112,21 @@ const FeedbackForm: React.FC = () => {
             }
             type="text"
             id="feedback_name"
+          />
+        </div>
+        <div className="w-full mb-4">
+          <label
+            htmlFor="feedback_description"
+            className="text-grey-90 text-body-sm text-[14px] mb-2 block"
+          >
+            Feedback Description
+          </label>
+          <textarea
+            className={
+              "py-2 px-4 border-[1.5px] w-full text-body-sm text-grey-90 placeholder:text-grey-30 focus:ring-1 focus:ring-grey-20 rounded focus:outline-none hover:border-[#0057FF1A] transition-all duration-700 border-grey-20 focus:border-primary"
+            }
+            rows={3}
+            id="feedback_description"
           />
         </div>
       </div>
@@ -165,6 +182,7 @@ const FeedbackForm: React.FC = () => {
                       <option value="short_answer">Short Answer</option>
                       <option value="paragraph">Paragraph</option>
                       <option value="multichoice">Multichoice</option>
+                      <option value="multiCheckbox">MultiCheckbox</option>
                     </select>
                   </div>
                 </div>
@@ -173,7 +191,7 @@ const FeedbackForm: React.FC = () => {
                   {field.question_type === "short_answer" && (
                     <input
                       type="text"
-                      className="px-5 pl-2.5 shadow-sm py-2 block w-full focus:ring-1 focus:ring-grey-20 rounded focus:outline-none hover:border-[#0057FF1A] transition-all duration-700 border-grey-20 focus:border-primary"
+                      className="px-5 pl-1 ml-2.5 shadow-sm py-2 block w-full focus:ring-1 focus:ring-grey-20 rounded focus:outline-none hover:border-[#0057FF1A] transition-all duration-700 border-grey-20 focus:border-primary"
                       placeholder={field.label}
                       readOnly
                     />
@@ -181,13 +199,55 @@ const FeedbackForm: React.FC = () => {
                   {field.question_type === "paragraph" && (
                     <textarea
                       rows={1}
-                      className="px-5 pl-2.5 shadow-sm py-2 block w-full focus:ring-1 focus:ring-grey-20 rounded focus:outline-none hover:border-[#0057FF1A] transition-all duration-700 border-grey-20 focus:border-primary"
+                      className="px-5 pl-1 ml-2.5 shadow-sm py-2 block w-full focus:ring-1 focus:ring-grey-20 rounded focus:outline-none hover:border-[#0057FF1A] transition-all duration-700 border-grey-20 focus:border-primary"
                       placeholder={field.label}
                       readOnly
                     />
                   )}
+                  {field.question_type === "multiCheckbox" && (
+                    <div className="flex flex-col space-y-2 -mt-2 pl-3.5">
+                      {field.list.map((option) => {
+                        return (
+                          <div className="mt-2 flex items-center" key={option}>
+                            <input
+                              type="checkbox"
+                              className="peer h-5 w-5 rounded-lg border-[1.5px] border-grey-30 accent-primary transition-all duration-1000 focus:rounded-lg focus:ring-0 focus:ring-primary cursor-pointer"
+                            />
+                            <label
+                              htmlFor={option}
+                              className="ml-3 text-grey-100 peer-checked:text-grey-90 text-body-md"
+                            >
+                              {option}
+                            </label>
+                          </div>
+                        );
+                      })}
+
+                      <div className="flex space-between mt-4">
+                        <input
+                          type="text"
+                          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                            setTextField2(e.target.value)
+                          }
+                          value={textField2}
+                          placeholder="Add an option"
+                          className="flex-1 py-2 px-4 border-[1.5px] w-full text-body-sm text-grey-90 placeholder:text-grey-30 focus:ring-1 focus:ring-grey-20 focus:outline-none hover:border-[#0057FF1A] transition-all duration-700 border-grey-20 focus:border-primary"
+                        />
+                        <button
+                          className="bg-primary block hover:bg-indigo-900 text-white px-4 -ml-1"
+                          onClick={() => {
+                            addFieldOption(field.name, textField2);
+                            setTextField2("");
+                          }}
+                        >
+                          Add
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
                   {field.question_type === "multichoice" && (
-                    <div className="my-4 flex flex-col space-y-2">
+                    <div className="my-4 flex flex-col space-y-2 pl-3.5">
                       <select className="px-5 pl-2.5 shadow-sm py-2 block w-full border focus:ring-1 focus:ring-grey-20 rounded focus:outline-none hover:border-[#0057FF1A] transition-all duration-700 border-grey-20 focus:border-primary">
                         {field.list.map((item) => (
                           <option key={item} value={item}>
@@ -207,7 +267,10 @@ const FeedbackForm: React.FC = () => {
                         />
                         <button
                           className="bg-primary block hover:bg-indigo-900 text-white px-4 -ml-1"
-                          onClick={() => addFieldOption(field.name, textField)}
+                          onClick={() => {
+                            addFieldOption(field.name, textField);
+                            setTextField("");
+                          }}
                         >
                           Add
                         </button>
