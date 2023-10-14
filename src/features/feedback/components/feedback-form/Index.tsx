@@ -2,14 +2,11 @@ import React, { useState, ChangeEvent } from "react";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import Button from "../../../../Components/ui/Button";
 import { AudioRecorder } from "react-audio-voice-recorder";
-<<<<<<< HEAD
-import useUploadform from "./services";
-import ButtonSpinner from "../../../../Components/ui/ButtonSpinner";
-import { useNavigate } from "react-router-dom";
-=======
 import Marks from "../../../../Components/progress-range/Index";
+import ButtonSpinner from "../../../../Components/ui/ButtonSpinner";
+import useUploadform from "./services";
+import { useNavigate } from "react-router-dom";
 
->>>>>>> master
 interface FormField {
   id: number;
   name: string;
