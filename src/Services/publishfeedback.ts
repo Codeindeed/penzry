@@ -1,4 +1,15 @@
-const h = "";
-console.log(h);
+import supabase from "./supabase";
 
-export {}
+async function publishfeedback() {
+  let { data: penzryTable, error } = await supabase
+    .from("penzryTable")
+    .select("id");
+  if (error) {
+    throw new Error(`${error.message}`);
+  }
+  console.log(penzryTable);
+
+  return penzryTable;
+}
+
+export default publishfeedback;

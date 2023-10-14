@@ -6,11 +6,12 @@ import Hamburger from "../../Components/icons/Hamburger";
 import Cancel from "../../Components/icons/Cancel";
 import { Outlet } from "react-router-dom";
 import Bell from "../../Components/icons/Bell";
+import { updateProject } from "../../Services/createUser";
 
 const DashboardLayout = () => {
   const [showMenu, setShowMenu] = useState(false);
-
   //Handle show navigation on mobile & Tablet
+
   function menuHandler() {
     setShowMenu(!showMenu);
   }
