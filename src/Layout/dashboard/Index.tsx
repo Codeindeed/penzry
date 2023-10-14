@@ -25,7 +25,7 @@ const DashboardLayout = () => {
       {/* MENU NAVIGATION BAR */}
       <div
         className={
-          "lg:w-[19%] md:w-[35%] w-[90%] z-20 lg:z-0 bg-white border-r lg:px-4 px-5 border-grey-10 h-screen fixed top-0 left-0 transition-all duration-500" +
+          "lg:w-[19%] md:w-[35%] w-[90%] z-50 lg:z-0 bg-white border-r lg:px-4 px-5 border-grey-10 h-screen fixed top-0 left-0 transition-all duration-500" +
           `${
             showMenu ? " translate-x-0" : " lg:translate-x-0 -translate-x-full"
           }`
