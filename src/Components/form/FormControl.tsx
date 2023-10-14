@@ -51,7 +51,8 @@ function FormControl({
   if (formType === "checkbox") {
     return (
       <Checkbox
-        children={children}
+        label={label}
+        options={options}
         name={name}
         register={register}
         errors={errors}
