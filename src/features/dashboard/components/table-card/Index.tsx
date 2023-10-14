@@ -1,5 +1,6 @@
 import Button from "../../../../Components/ui/Button";
 import { FiArrowUpRight } from "react-icons/fi";
+import CopyLinkButton from "../../../../Components/ui/CopyText";
 
 interface TableCardProps {
   feedback: string;
@@ -15,9 +16,8 @@ const TableCard = ({ feedback, userEmail, numberReponses }: TableCardProps) => {
           <p className="text-grey-90 text-body-sm md:text-body-md">
             {feedback}
           </p>
-          <p className="text-grey-40 text-body-xs md:text-body-sm">
-            {userEmail}
-          </p>
+
+          <CopyLinkButton linkToCopy={userEmail} linkText={userEmail} />
         </div>
         <Button
           type="small"
