@@ -2,6 +2,9 @@ import React, { useState, ChangeEvent } from "react";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import Button from "../../../../Components/ui/Button";
 import { AudioRecorder } from "react-audio-voice-recorder";
+import useUploadform from "./services";
+import ButtonSpinner from "../../../../Components/ui/ButtonSpinner";
+import { useNavigate } from "react-router-dom";
 interface FormField {
   id: number;
   name: string;
@@ -12,6 +15,8 @@ interface FormField {
 }
 
 const FeedbackForm: React.FC = () => {
+  const navigate = useNavigate();
+  const { upload, status } = useUploadform();
   const [formContent, setFormContent] = useState<FormField[]>([
     {
       id: 0,
@@ -33,13 +38,16 @@ const FeedbackForm: React.FC = () => {
   const [textField2, setTextField2] = useState<string>("");
   const [editedField, setEditedField] = useState<string>("");
 
-  const publishFeedback = () => {
+  const publishFeedback = async () => {
     const feedback = {
       feedback_title: formTitle.title,
       feedback_description: formTitle.description,
       feedback_questions: formContent,
     };
-    console.log(feedback);
+    const status = await upload(feedback);
+    if (status === "done") {
+      navigate("/all-feedbacks");
+    }
   };
 
   const addQuestion = () => {
@@ -352,7 +360,8 @@ const FeedbackForm: React.FC = () => {
           className="w-6/12 mt-6"
           onClick={publishFeedback}
         >
-          Publish Feedback
+          {(status === " " || "idle") && "Publish Feedback"}
+          {status === "loading" && <ButtonSpinner />}
         </Button>
       </div>
     </div>

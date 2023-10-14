@@ -1,15 +1,64 @@
 import supabase from "./supabase";
+interface Feedback {
+  feedback_title: string;
+  feedback_description: string;
+  feedback_questions: {
+    id: number;
+    name: string;
+    label: string;
+    required: boolean;
+    question_type: string;
+    list: any[];
+  }[];
+  projectId: number;
+  offer: any;
+}
+interface User {
+  profile?: string;
+  feedBacks?: number[];
+  email?: string;
+}
+interface Data {
+  profile: string;
+  email: string;
+  feedBacks: Feedback[];
+  id: string;
+}
+function extractFeedback(data: Data[]): Array<{
+  feedback: string;
+  userEmail: string;
+  numberResponses: number;
+}> {
+  const result: Array<{
+    feedback: string;
+    userEmail: string;
+    numberResponses: number;
+  }> = [];
 
-async function publishfeedback() {
-  let { data: penzryTable, error } = await supabase
-    .from("penzryTable")
-    .select("id");
-  if (error) {
-    throw new Error(`${error.message}`);
-  }
-  console.log(penzryTable);
+  data.forEach((item: Data) => {
+    item.feedBacks.forEach((feedback: Feedback) => {
+      result.push({
+        feedback: feedback.feedback_title,
+        userEmail: item.email,
+        numberResponses: 34,
+      });
+    });
+  });
 
-  return penzryTable;
+  return result;
 }
 
-export default publishfeedback;
+const filterfeedbacks = async (user: User) => {
+  const { data: projectI, error: projectError } = await supabase
+    .from("penzryTable")
+    .select("*")
+    .eq("profile", user.profile);
+  if (projectError) {
+    throw new Error(`${projectError.message}`);
+  }
+  const feedBack = extractFeedback(projectI);
+
+  return feedBack;
+};
+
+export default filterfeedbacks;

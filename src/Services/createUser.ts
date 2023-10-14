@@ -1,8 +1,22 @@
 import supabase from "./supabase";
 interface User {
-  profile: string;
+  profile?: string;
   feedBacks?: number[];
   email?: string;
+}
+ interface Feedback {
+  feedback_title: string;
+  feedback_description: string;
+  feedback_questions: {
+    id: number;
+    name: string;
+    label: string;
+    required: boolean;
+    question_type: string;
+    list: any[];
+  }[];
+  projectId: number;
+  offer: any;
 }
 async function createUSer(user: User) {
   const { data, error } = await supabase
@@ -15,7 +29,7 @@ async function createUSer(user: User) {
   return data;
 }
 
-async function updateProject(projectid: number, user: User) {
+async function updateProject(feedback: any, user: User) {
   const { data: projectI, error: projectError } = await supabase
     .from("penzryTable")
     .select("*")
@@ -30,7 +44,7 @@ async function updateProject(projectid: number, user: User) {
   }
   const { error } = await supabase
     .from("penzryTable")
-    .update({ projectIds: [...projectI[0].projectIds, projectid] })
+    .update({ feedBacks: [...projectI[0]?.feedBacks, feedback] })
     .eq("profile", user.profile);
 
   if (error) {
@@ -38,4 +52,18 @@ async function updateProject(projectid: number, user: User) {
   }
   return projectI;
 }
-export { createUSer, updateProject };
+
+const filterfeedbacks = async (user: User) => {
+  const { data: projectI, error: projectError } = await supabase
+    .from("penzryTable")
+    .select("*")
+    .eq("profile", user.profile);
+  if (projectError) {
+    throw new Error(`${projectError.message}`);
+  }
+  const feed = projectI[0].feedBacks.map((feedback: Feedback) => {
+    return feedback.projectId;
+  });
+  return feed;
+};
+export { createUSer, updateProject,filterfeedbacks };

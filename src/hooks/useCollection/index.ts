@@ -9,34 +9,39 @@ interface nftData {
   };
 }
 
-async function useCollection(
-  data: any,
-  type: string,
-  nftData?: nftData,
-  projectID?: number
-) {
-  let post;
-  if (type === "project") {
-    post = await axios.post("/projects", {
-      symbol: "PENZRY",
-      description: data?.description,
-      image: "https://hatrabbits.com/wp-content/uploads/2017/01/random.jpg",
-    });
-  }
-  if (type === "nft") {
-    post = await axios.post(`/projects/${projectID}/nfts`, {
-      attributes: {
-        audio: nftData?.attributes?.audio,
-        email: nftData?.attributes?.email,
-        points: nftData?.attributes?.points,
-        ...data?.attributes,
-      },
-      name: nftData?.name,
-      image: "https://hatrabbits.com/wp-content/uploads/2017/01/random.jpg",
-    });
-  }
-
-  return post;
+function useCollection() {
+  const project = async (
+    datas: any,
+    type: string,
+    nftData?: nftData,
+    projectID?: number
+  ) => {
+    let post;
+    if (type === "project") {
+      const { data } = await axios.post("/projects", {
+        name: datas?.feedback_title,
+        symbol: "PENZRY",
+        description: datas?.feedback_description,
+        image: "https://hatrabbits.com/wp-content/uploads/2017/01/random.jpg",
+      });
+      post = data;
+      console.log(post);
+    }
+    if (type === "nft") {
+      post = await axios.post(`/projects/${projectID}/nfts`, {
+        attributes: {
+          audio: nftData?.attributes?.audio,
+          email: nftData?.attributes?.email,
+          points: nftData?.attributes?.points,
+          ...datas?.attributes,
+        },
+        name: nftData?.name,
+        image: "https://hatrabbits.com/wp-content/uploads/2017/01/random.jpg",
+      });
+    }
+    return post;
+  };
+  return { project };
 }
 
 export default useCollection;

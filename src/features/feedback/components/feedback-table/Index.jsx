@@ -1,38 +1,31 @@
 import TableCard from "../../../dashboard/components/table-card/Index";
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
+import filterfeedbacks from "../../../../Services/publishfeedback";
+import ButtonSpinner from "../../../../Components/ui/ButtonSpinner";
 
-const content = [
-  {
-    feedback: "Food Meal Tuesday",
-    userEmail: "alexspoof@gmail.com",
-    numberResponses: "11",
-  },
-  {
-    feedback: "Event Lawyers Meetup",
-    userEmail: "jerryade@gmail.com",
-    numberResponses: "139",
-  },
-  {
-    feedback: "Techcabal Moonshot",
-    userEmail: "alexspoof@gmail.com",
-    numberResponses: "08",
-  },
-  {
-    feedback: "Event Lawyers Meetup",
-    userEmail: "jerryade@gmail.com",
-    numberResponses: "139",
-  },
-  {
-    feedback: "Techcabal Moonshot",
-    userEmail: "alexspoof@gmail.com",
-    numberResponses: "08",
-  },
-];
-
+import { CiShare1 } from "react-icons/ci";
 const FeedbackTable = () => {
+  const [feedback, setFeedback] = useState([]);
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    const getFeedback = async () => {
+      setLoading(true);
+      const response = await filterfeedbacks({ profile: "alex" });
+      console.log(response);
+      setFeedback(response);
+      setLoading(false);
+    };
+    getFeedback();
+  }, []);
   return (
     <div>
-      {content.map((cur, Index) => {
+      {loading === true && <ButtonSpinner />}
+      {loading === false && feedback.length === 0 && (
+        <>
+          <CiShare1></CiShare1>
+        </>
+      )}
+      {feedback.map((cur, Index) => {
         return (
           <Fragment key={Index}>
             <TableCard
