@@ -117,9 +117,9 @@ const FeedbackForm: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col justify-start items-center min-h-screen w-[90%] space-y-4">
-      <div className="flex flex-col px-10 py-8 bg-white rounded-md justify-center item-start w-full shadow-sm border-primary border-t-8 space-y-2 min-h-52 ">
-        <h1 className="text-headline-md text-primary">Create Feedback</h1>
+    <div className="flex flex-col justify-start items-center min-h-screen md:w-[90%] w-full space-y-4">
+      <div className="flex flex-col md:px-10 px-6 py-8 bg-white rounded-md justify-center item-start w-full shadow-sm border-primary border-t-8 space-y-2 min-h-52 ">
+        <h1 className="text-headline-sm text-primary">Create Feedback</h1>
         <div className="w-full mb-4">
           <label
             htmlFor="feedback_name"
@@ -173,13 +173,13 @@ const FeedbackForm: React.FC = () => {
           return (
             <div
               key={field.id}
-              className="rounded-md bg-white flex w-full shadow-md px-4 py-4"
+              className="rounded-md bg-white flex w-full shadow-md px-2.5 md:px-4 py-4"
             >
               <div className="flex flex-col w-full">
-                <div className="flex justify-between items-center space-y-2">
+                <div className="flex justify-between items-start md:items-center flex-col md:flex-row space-y-2">
                   <div
                     key={field.name}
-                    className="block text-sm font-medium text-gray-700 capitalize px-5 mt-3"
+                    className="block text-sm font-medium text-gray-700 capitalize px-1 md:px-5 mt-3"
                   >
                     {onEdit && editedField === field.name ? (
                       <input
@@ -209,7 +209,7 @@ const FeedbackForm: React.FC = () => {
                       </label>
                     )}
                   </div>
-                  <div>
+                  <div className="ml-2.5 md:ml-0">
                     <select
                       className="mr-5 focus:ring-1 focus:ring-grey-20 rounded focus:outline-none hover:border-[#0057FF1A] transition-all duration-700 border-grey-20 focus:border-primary"
                       onChange={(e: ChangeEvent<HTMLSelectElement>) =>
@@ -224,11 +224,11 @@ const FeedbackForm: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="my-4 w-full px-5">
+                <div className="my-4 w-full md:px-5 px-1">
                   {field.question_type === "short_answer" && (
                     <input
                       type="text"
-                      className="px-5 pl-1 ml-2.5 shadow-sm py-2 block w-full focus:ring-1 focus:ring-grey-20 rounded focus:outline-none hover:border-[#0057FF1A] transition-all duration-700 border-grey-20 focus:border-primary"
+                      className="px-5 pl-1 mx-auto w-[95%] md:ml-2.5 shadow-sm py-2 block md:w-full focus:ring-1 focus:ring-grey-20 rounded focus:outline-none hover:border-[#0057FF1A] transition-all duration-700 border-grey-20 focus:border-primary"
                       placeholder={field.label}
                       readOnly
                     />
@@ -236,13 +236,13 @@ const FeedbackForm: React.FC = () => {
                   {field.question_type === "paragraph" && (
                     <textarea
                       rows={1}
-                      className="px-5 pl-1 ml-2.5 shadow-sm py-2 block w-full focus:ring-1 focus:ring-grey-20 rounded focus:outline-none hover:border-[#0057FF1A] transition-all duration-700 border-grey-20 focus:border-primary"
+                      className="px-5 pl-1 mx-auto w-[95%] md:ml-2.5 shadow-sm py-2 block md:w-full focus:ring-1 focus:ring-grey-20 rounded focus:outline-none hover:border-[#0057FF1A] transition-all duration-700 border-grey-20 focus:border-primary"
                       placeholder={field.label}
                       readOnly
                     />
                   )}
                   {field.question_type === "multiCheckbox" && (
-                    <div className="flex flex-col space-y-2 -mt-2 pl-3.5">
+                    <div className="flex flex-col space-y-2 -mt-2 md:pl-3.5 px-2">
                       {field.list.map((option) => {
                         return (
                           <div className="mt-2 flex items-center" key={option}>
@@ -284,7 +284,7 @@ const FeedbackForm: React.FC = () => {
                   )}
 
                   {field.question_type === "multichoice" && (
-                    <div className="my-4 flex flex-col space-y-2 pl-3.5">
+                    <div className="my-4 flex flex-col space-y-2 md:pl-3.5 px-2">
                       <select className="px-5 pl-2.5 shadow-sm py-2 block w-full border focus:ring-1 focus:ring-grey-20 rounded focus:outline-none hover:border-[#0057FF1A] transition-all duration-700 border-grey-20 focus:border-primary">
                         {field.list.map((item) => (
                           <option key={item} value={item}>
@@ -319,7 +319,7 @@ const FeedbackForm: React.FC = () => {
             </div>
           );
         })}
-        <div className="absolute top-0 -right-16 flex flex-col items-center bg-white p-2 rounded-md shadow-md">
+        <div className="fixed md:absolute top-[10vh] right-5 md:-right-16 flex flex-col items-center bg-white p-2 rounded-md shadow-md">
           <button onClick={() => addQuestion()}>
             <AiOutlinePlusCircle className="w-8 h-8 text-gray-400 hover:text-indigo-500" />
           </button>

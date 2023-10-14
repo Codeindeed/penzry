@@ -3,6 +3,7 @@ import SelectInput from "./form-inputs/SelectInput";
 import PasswordInput from "./form-inputs/PasswordInput";
 import Checkbox from "./form-inputs/Checkbox";
 import { ReactNode } from "react";
+import Textarea from "./form-inputs/Textarea";
 
 interface formControlProps {
   formType?: string;
@@ -16,6 +17,7 @@ interface formControlProps {
   options?: any;
   otp?: any;
   setOtp?: any;
+  min?: any;
   children?: ReactNode;
 }
 
@@ -65,6 +67,19 @@ function FormControl({
   if (formType === "password") {
     return (
       <PasswordInput
+        label={label}
+        name={name}
+        register={register}
+        errors={errors}
+        {...props}
+      />
+    );
+  }
+
+  //INPUT PASSWORD
+  if (formType === "textarea") {
+    return (
+      <Textarea
         label={label}
         name={name}
         register={register}
