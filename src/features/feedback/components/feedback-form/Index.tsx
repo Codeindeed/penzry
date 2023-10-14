@@ -23,10 +23,24 @@ const FeedbackForm: React.FC = () => {
     },
   ]);
 
+  const [formTitle, setFormTitle] = useState({
+    title: "",
+    description: "",
+  });
+
   const [onEdit, setOnEdit] = useState<boolean>(false);
   const [textField, setTextField] = useState<string>("");
   const [textField2, setTextField2] = useState<string>("");
   const [editedField, setEditedField] = useState<string>("");
+
+  const publishFeedback = () => {
+    const feedback = {
+      feedback_title: formTitle.title,
+      feedback_description: formTitle.description,
+      feedback_questions: formContent,
+    };
+    console.log(feedback);
+  };
 
   const addQuestion = () => {
     const field: FormField = {
@@ -111,6 +125,14 @@ const FeedbackForm: React.FC = () => {
             }
             type="text"
             id="feedback_name"
+            onChange={(e: ChangeEvent<HTMLInputElement>) => {
+              setFormTitle((prev) => {
+                return {
+                  ...prev,
+                  title: e.target.value,
+                };
+              });
+            }}
           />
         </div>
         <div className="w-full mb-4">
@@ -125,6 +147,14 @@ const FeedbackForm: React.FC = () => {
               "py-2 px-4 border-[1.5px] w-full text-body-sm text-grey-90 placeholder:text-grey-30 focus:ring-1 focus:ring-grey-20 rounded focus:outline-none hover:border-[#0057FF1A] transition-all duration-700 border-grey-20 focus:border-primary"
             }
             rows={3}
+            onChange={(e: ChangeEvent<HTMLTextAreaElement>) => {
+              setFormTitle((prev) => {
+                return {
+                  ...prev,
+                  description: e.target.value,
+                };
+              });
+            }}
             id="feedback_description"
           />
         </div>
@@ -317,7 +347,11 @@ const FeedbackForm: React.FC = () => {
         <br />
       </div>
       <div className="flex justify-center w-full mt-8">
-        <Button type="primary" className="w-6/12 mt-6" >
+        <Button
+          type="primary"
+          className="w-6/12 mt-6"
+          onClick={publishFeedback}
+        >
           Publish Feedback
         </Button>
       </div>
