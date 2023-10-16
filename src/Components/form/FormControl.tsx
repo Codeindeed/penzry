@@ -4,6 +4,8 @@ import PasswordInput from "./form-inputs/PasswordInput";
 import Checkbox from "./form-inputs/Checkbox";
 import { ReactNode } from "react";
 import Textarea from "./form-inputs/Textarea";
+import Marks from "../progress-range/Index";
+
 
 interface formControlProps {
   formType?: string;
@@ -18,6 +20,8 @@ interface formControlProps {
   otp?: any;
   setOtp?: any;
   min?: any;
+  sendValue?: (data: any) => void;
+  rtl?: boolean;
   children?: ReactNode;
 }
 
@@ -30,6 +34,8 @@ function FormControl({
   errors,
   options,
   control,
+  rtl,
+  sendValue,
   otp,
   setOtp,
   children,
@@ -75,7 +81,18 @@ function FormControl({
       />
     );
   }
-
+  if (formType === "progress") {
+    return (
+      <div className="my-3 w-full md:px-5 px-1">
+        <label className="block pl-1 px-5 mx-auto w-[95%] md:ml-2 py-2 md:w-full">
+          {label}
+        </label>
+        <div className="px-5 pl-1 mx-auto w-[95%] md:ml-2 py-2 md:w-full">
+          <Marks rtl={false} sendValue={sendValue} />
+        </div>
+      </div>
+    );
+  }
   //INPUT PASSWORD
   if (formType === "textarea") {
     return (

@@ -7,7 +7,7 @@ import ProfileIcon from "../../Components/icons/ProfileIcon";
 import BillingIcon from "../../Components/icons/BillingIcon";
 import NotesIcon from "../../Components/icons/NotesIcon";
 import LogoutIcon from "../../Components/icons/LogoutIcon";
-
+import useWeb3Auth from "../../hooks/useWeb3Auth";
 interface NavItemProps {
   children: ReactNode;
   to: string;
@@ -21,6 +21,7 @@ interface NavProps {
 }
 
 const Navigation = ({ navHandler }: NavProps) => {
+  const [login, logout] = useWeb3Auth();
   const handleClick = () => {
     navHandler(false);
   };
@@ -57,7 +58,10 @@ const Navigation = ({ navHandler }: NavProps) => {
         <ProfileIcon />
       </NavItem>
 
-      <button className="px-4 py-2.5 transition-all duration-500 text-body-sm text-[14.5px] md:text-body-md hover:bg-variant-10 rounded flex items-center gap-3 my-0.5 translate-x-0 hover:translate-x-[1px]  stroke-grey-50 bg-transparent text-grey-50 w-full">
+      <button
+        className="px-4 py-2.5 transition-all duration-500 text-body-sm text-[14.5px] md:text-body-md hover:bg-variant-10 rounded flex items-center gap-3 my-0.5 translate-x-0 hover:translate-x-[1px]  stroke-grey-50 bg-transparent text-grey-50 w-full"
+        onClick={login}
+      >
         <LogoutIcon /> Sign Out
       </button>
     </div>

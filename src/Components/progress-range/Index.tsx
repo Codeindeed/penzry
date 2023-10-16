@@ -5,7 +5,10 @@ const STEP = 10;
 const MIN = 0;
 const MAX = 100;
 
-const Marks: React.FC<{ rtl: boolean }> = ({ rtl }) => {
+const Marks: React.FC<{ rtl: boolean; sendValue:any }> = ({
+  rtl,
+  sendValue,
+}) => {
   const [values, setValues] = React.useState([50]);
   return (
     <div
@@ -21,7 +24,7 @@ const Marks: React.FC<{ rtl: boolean }> = ({ rtl }) => {
         min={MIN}
         max={MAX}
         rtl={rtl}
-        onChange={(values) => setValues(values)}
+        onChange={(values) => {setValues(values); sendValue(values);}}
         renderMark={({ props, index }) => (
           <div
             {...props}

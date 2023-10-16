@@ -1,10 +1,11 @@
+import { get } from "http";
 import supabase from "./supabase";
 interface User {
   profile?: string;
   feedBacks?: number[];
   email?: string;
 }
- interface Feedback {
+interface Feedback {
   feedback_title: string;
   feedback_description: string;
   feedback_questions: {
@@ -28,6 +29,28 @@ async function createUSer(user: User) {
   }
   return data;
 }
+
+interface UserData {
+  profile?: string;
+  feedBacks?: number[];
+  email?: string;
+}
+
+const getUserandQuestions = async (user: User, projectId: number) => {
+  const { data, error } = await supabase
+    .from("penzryTable")
+    .select("*")
+    .eq("profile", "alex");
+  if (error) {
+    throw new Error(`${error.message}`);
+  }
+  const feedBack = data[0]?.feedBacks;
+
+  const filteredArray = feedBack.filter(
+    (item: any) => item.projectId === projectId
+  );
+  return filteredArray;
+};
 
 async function updateProject(feedback: any, user: User) {
   const { data: projectI, error: projectError } = await supabase
@@ -66,4 +89,4 @@ const filterfeedbacks = async (user: User) => {
   });
   return feed;
 };
-export { createUSer, updateProject,filterfeedbacks };
+export { createUSer, updateProject, filterfeedbacks, getUserandQuestions };

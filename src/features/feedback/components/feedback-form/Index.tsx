@@ -2,6 +2,7 @@ import React, { useState, ChangeEvent } from "react";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import Button from "../../../../Components/ui/Button";
 import { AudioRecorder } from "react-audio-voice-recorder";
+import { toast } from "react-hot-toast";
 import Marks from "../../../../Components/progress-range/Index";
 import ButtonSpinner from "../../../../Components/ui/ButtonSpinner";
 import useUploadform from "./services";
@@ -12,7 +13,12 @@ interface FormField {
   name: string;
   label: string;
   required: boolean;
-  question_type: "short_answer" | "paragraph" | "multichoice" | "multiCheckbox";
+  question_type:
+    | "short_answer"
+    | "paragraph"
+    | "multichoice"
+    | "multiCheckbox"
+    | "progress";
   list: string[];
 }
 
@@ -25,7 +31,7 @@ const FeedbackForm: React.FC = () => {
       name: "0",
       label: "Untitled Question",
       required: false,
-      question_type: "short_answer",
+      question_type: "progress",
       list: [],
     },
   ]);
@@ -44,10 +50,12 @@ const FeedbackForm: React.FC = () => {
       feedback_description: formTitle.description,
       feedback_questions: formContent,
     };
+    console.log(feedback);
+
     const status = await upload(feedback);
-    if (status === "done") {
-      navigate("/all-feedbacks");
-    }
+
+    toast.success("Feedback created successfully");
+    navigate("/all-feedbacks");
   };
 
   const addQuestion = () => {
@@ -56,7 +64,7 @@ const FeedbackForm: React.FC = () => {
       name: `question_${formContent.length}`,
       label: "Untitled question",
       required: false,
-      question_type: "short_answer",
+      question_type: "progress",
       list: [],
     };
     setFormContent([...formContent, field]);
@@ -71,16 +79,16 @@ const FeedbackForm: React.FC = () => {
     }
   };
 
-  const addAudioElement = (blob: Blob) => {
-    const audioContainer = document.getElementById("audio");
-    if (audioContainer) {
-      const url = URL.createObjectURL(blob);
-      const audio = document.createElement("audio");
-      audio.src = url;
-      audio.controls = true;
-      audioContainer.appendChild(audio);
-    }
-  };
+  // const addAudioElement = (blob: Blob) => {
+  //   const audioContainer = document.getElementById("audio");
+  //   if (audioContainer) {
+  //     const url = URL.createObjectURL(blob);
+  //     const audio = document.createElement("audio");
+  //     audio.src = url;
+  //     audio.controls = true;
+  //     audioContainer.appendChild(audio);
+  //   }
+  // };
 
   return (
     <div className="flex flex-col justify-start items-center min-h-screen md:w-[90%] w-full space-y-4">
@@ -178,14 +186,19 @@ const FeedbackForm: React.FC = () => {
                 </div>
 
                 <div className="my-4 w-full md:px-5 px-1">
-                  {field.question_type === "short_answer" && (
+                  {field.question_type === "progress" && (
                     <label className="block pl-1 px-5 mx-auto w-[95%] md:ml-2 py-2 md:w-full">
                       {field.label}
                     </label>
                   )}
 
                   <div className="px-5 pl-1 mx-auto w-[95%] md:ml-2 py-2 md:w-full">
-                    <Marks rtl={false} />
+                    <Marks
+                      rtl={false}
+                      sendValue={(value: any) => {
+                        console.log(value);
+                      }}
+                    />
                   </div>
                 </div>
               </div>
@@ -198,7 +211,7 @@ const FeedbackForm: React.FC = () => {
           </button>
         </div>
       </div>
-      <div
+      {/* <div
         id="audio"
         className="bg-white py-6 px-5 w-full flex flex-col items-center justify-center"
       >
@@ -226,14 +239,14 @@ const FeedbackForm: React.FC = () => {
           // showVisualizer={true}
         />
         <br />
-      </div>
+      </div> */}
       <div className="flex justify-center w-full mt-8">
         <Button
           type="primary"
           className="w-6/12 mt-6"
           onClick={publishFeedback}
         >
-          {(status === " " || "idle") && "Publish Feedback"}
+          {(status === "" || "idle") && "Publish Feedback"}
           {status === "loading" && <ButtonSpinner />}
         </Button>
       </div>

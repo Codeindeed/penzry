@@ -40,7 +40,7 @@ function extractFeedback(data: Data[]): Array<{
       result.push({
         feedback: feedback.feedback_title,
         userEmail: item.email,
-        numberResponses: 34,
+        numberResponses: 0,
       });
     });
   });

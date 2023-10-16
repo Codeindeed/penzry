@@ -6,9 +6,10 @@ interface AuthProps {
 }
 
 interface AuthContextProps {
-  email: string;
-  authToken: string;
-  isloggedout: boolean;
+  email?: string;
+  authToken?: string;
+  name?: string;
+  profileImage?: string;
 }
 
 interface AuthContextValue {
@@ -22,7 +23,8 @@ export const AuthProvider = ({ children }: AuthProps) => {
   const [auth, setAuth] = useState<AuthContextProps>({
     email: "",
     authToken: "",
-    isloggedout: false,
+    name: "",
+    profileImage: "",
   });
 
   const contextValue: AuthContextValue = {

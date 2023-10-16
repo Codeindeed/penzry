@@ -1,9 +1,13 @@
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import FormControl from "../../../../Components/form/FormControl";
 import Button from "../../../../Components/ui/Button";
 import { AudioRecorder } from "react-audio-voice-recorder";
 import useMintFeedback from "../../../../views/user-feedback-form/services";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { getUserandQuestions } from "../../../../Services/createUser";
+import useMint from "./services";
+import toast from "react-hot-toast";
 interface formProps {
   firstname: string;
   lastname: string;
@@ -18,7 +22,21 @@ const initialValues = {
 
 function FeedbackForm() {
   const { mintFeedback } = useMintFeedback();
+  const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
+  const [values, setValues] = useState<any>([]);
+  const { project } = useMint();
   const params = useParams();
+  const { company, id } = params;
+  const [data, setData] = useState<any>();
+  const [loading, setIsloading] = useState(false);
+  const sendValues = (data: any) => {
+    let [info] = data;
+    const infos = {
+      value: info,
+    };
+    setValues((prev: any) => [infos, ...prev]);
+    console.log(values);
+  };
   const {
     register,
     handleSubmit,
@@ -29,11 +47,23 @@ function FeedbackForm() {
     mode: "onTouched",
   });
 
+  useEffect(() => {
+    setIsloading(false);
+
+    const projectId = Number(id);
+    async function Questions() {
+      const info = await getUserandQuestions({ profile: company }, projectId);
+      setData(info[0]?.feedback_questions);
+      setIsloading(true);
+    }
+    Questions();
+  }, [company, id, params]);
   const addAudioElement = (blob: Blob) => {
     const audioContainer = document.getElementById("audio");
     if (audioContainer) {
       const url = URL.createObjectURL(blob);
       const audio = document.createElement("audio");
+      setAudioBlob(blob);
       audio.src = url;
       audio.controls = true;
       audioContainer.appendChild(audio);
@@ -41,40 +71,15 @@ function FeedbackForm() {
   };
 
   const onSubmit = handleSubmit(async (data) => {
-    // Handle form submission
-    console.log(params);
+    const nft = await project(id);
+    toast.success("Form submitted successfully check your mail");
     reset();
   });
 
   return (
     <form onSubmit={onSubmit}>
-      <div className="grid grid-cols-1 md:grid-cols-2 md:gap-5 gap-0">
-        <div>
-          <FormControl
-            formType="input"
-            type="text"
-            label="First Name"
-            name="firstname"
-            register={register}
-            errors={errors}
-            placeholder="Enter First Name"
-          />
-        </div>
-        <div>
-          <FormControl
-            formType="input"
-            type="text"
-            label="Last Name"
-            name="lastname"
-            register={register}
-            errors={errors}
-            placeholder="Enter Last Name"
-          />
-        </div>
-      </div>
-
       <FormControl
-        formType="input"
+        formType="email"
         type="email"
         label="E-mail"
         name="email"
@@ -83,6 +88,22 @@ function FeedbackForm() {
         placeholder="example@domain.com"
       />
 
+      {loading &&
+        data &&
+        data.map((item: any, index: number) => {
+          return (
+            <FormControl
+              formType={item.question_type}
+              label={item.label}
+              name={item.name}
+              register={register}
+              errors={errors}
+              placeholder="Enter your answer"
+              key={item.id}
+              sendValue={sendValues}
+            />
+          );
+        })}
       <div
         id="audio"
         className="bg-white py-6 px-5 w-full flex flex-col items-center justify-center"

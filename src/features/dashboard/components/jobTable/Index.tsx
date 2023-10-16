@@ -3,19 +3,9 @@ import { Fragment } from "react";
 
 const content = [
   {
-    feedback: "Food Meal Tuesday",
-    userEmail: "alexspoof@gmail.com",
-    numberResponses: "11",
-  },
-  {
-    feedback: "Event Lawyers Meetup",
-    userEmail: "jerryade@gmail.com",
-    numberResponses: "139",
-  },
-  {
-    feedback: "Techcabal Moonshot",
-    userEmail: "alexspoof@gmail.com",
-    numberResponses: "08",
+    feedback: "Mr Biggs Food Review",
+    userEmail: "favouralex084@gmail.com",
+    numberResponses: "0",
   },
 ];
 

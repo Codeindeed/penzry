@@ -6,7 +6,7 @@ const InfoCardsGrid = () => {
     <div className="flex gap-2 lg:gap-3 card-carousel w-full h-[280px] md:h-full overflow-x-auto md:overflow-x-visible relative">
       <InfoCards
         title="Feedbacks"
-        stats="20"
+        stats="1"
         percent={`+${0}%`}
         button={
           <Button type="small" className="text-primary my-1.5 lg:my-0">
@@ -16,7 +16,7 @@ const InfoCardsGrid = () => {
       />
       <InfoCards
         title="Responses"
-        stats="23"
+        stats="0"
         percent={`+${0}%`}
         button={
           <Button type="small" className="text-primary my-1.5 lg:my-0">

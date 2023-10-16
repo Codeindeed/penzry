@@ -5,6 +5,9 @@ import { SolanaWalletConnectorPlugin } from "@web3auth/solana-wallet-connector-p
 import { SolflareAdapter } from "@web3auth/solflare-adapter";
 import { SlopeAdapter } from "@web3auth/slope-adapter";
 import useAuth from "../useAuth";
+import { useQuery } from "@tanstack/react-query";
+import { createUSer } from "../../Services/createUser";
+import { Navigate } from "react-router-dom";
 
 const clientId =
   "BEiqaHl8u_pJCiWD2z1k5dnUS24MrMNiGcr94iobGYuDCDkDuXMpK7fItVJPTr_PhnJ37iVKtUViaQrxGrH4j_0";
@@ -60,14 +63,38 @@ function useWeb3Auth() {
   }, []);
 
   async function login() {
-    if (!web3auth) {
-      throw new Error("Web3Auth not initialized");
+    try {
+      if (!web3auth) {
+        throw new Error("Web3Auth not initialized");
+      }
+      await web3auth.connect();
+      const info = await web3auth.getUserInfo();
+      setAuth({
+        email: info.email,
+        name: info.name,
+        authToken: info.idToken,
+        profileImage: info.profileImage,
+      });
+      createUSer({
+        email: info.email,
+        profile: info.name,
+      });
+    } catch (error) {
+      console.error(error);
     }
-    await web3auth.connect();
-    const info = await web3auth.getUserInfo();
-    console.log(info);
   }
-  return [login];
+  async function logout() {
+    if (web3auth) {
+      web3auth.logout();
+      setAuth({
+        email: "",
+        name: "",
+        authToken: "",
+        profileImage: "",
+      });
+    }
+  }
+  return [login, logout];
 }
 
 export default useWeb3Auth;
